@@ -8,8 +8,13 @@ var _ = require('lodash'),
     window.addEventListener('hashchange', onHashChange, true);
   },
 
+  onChangeHashCallbacks = [],
+
   onHashChange = function () {
-    updateAtom(getLocationHash());
+    var routes = getMatchedRoutes(getLocationHash());
+    _.each(onChangeHashCallbacks, function (callback) {
+      callback(routes);
+    });
   },
 
   getLocationHash = function () {
@@ -118,6 +123,11 @@ module.exports = {
   init (appRoutes) {
     initRoutes(appRoutes);
     listenLocationChanges();
+    onHashChange();
+  },
+
+  onChangeHash (callback) {
+    onChangeHashCallbacks.push(callback);
   },
 
   go (name, values) {
@@ -130,12 +140,6 @@ module.exports = {
     if (isValidRoute(name, values)) {
       return '#' + getRouteUrl(name, values);
     }
-  },
-
-  getMatchedRoutes (hash) {
-    return getMatchedRoutes(hash);
   }
 
 };
-
-window.route = module.exports;
