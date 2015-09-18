@@ -1,8 +1,6 @@
 'use strict';
 
-var _ = require('lodash');
-
-var
+var _ = require('lodash'),
 
   // hash
 
