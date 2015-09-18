@@ -117,8 +117,6 @@ var
 
 module.exports = {
 
-  atomAttr: atomAttr,
-
   init (appRoutes) {
     initRoutes(appRoutes);
     listenLocationChanges();
