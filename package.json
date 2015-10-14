@@ -2,7 +2,6 @@
   "name": "router",
   "version": "0.0.1",
   "description": "",
-  "main": "",
   "dependencies": {
     "lodash": "3.10.1"
   }
