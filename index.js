@@ -120,8 +120,8 @@ var _ = require('lodash'),
 
 module.exports = {
 
-  init (appRoutes) {
-    initRoutes(appRoutes);
+  addRoutes (routes) {
+    initRoutes(routes);
     listenLocationChanges();
     onHashChange();
   },
