@@ -2,7 +2,7 @@
   "name": "router",
   "version": "0.0.1",
   "description": "",
-  "main": "src/router.js",
+  "main": "src/index.js",
   "dependencies": {
     "lodash": "3.10.1"
   }
