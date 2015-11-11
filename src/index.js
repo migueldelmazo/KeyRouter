@@ -40,7 +40,8 @@ var _ = require('lodash'),
       var path = ensureHash(parentPath + '/' + route.path);
       treeRoutes.push({
         path: path,
-        name: route.name
+        name: route.name,
+        options: route.options || {}
       });
       initRoutes(route.subRoute, path);
     });
@@ -57,7 +58,7 @@ var _ = require('lodash'),
       // check if current route matches and is the son of the previous route
       if (match && route.path.indexOf(lastMatchedPath) >= 0) {
         lastMatchedPath = route.path;
-        matchedRoutes.push(getMatchedRouteData(route.name, match));
+        matchedRoutes.push(getMatchedRouteData(route, match));
       }
     });
     checkNotFoundRoute(matchedRoutes);
@@ -69,10 +70,11 @@ var _ = require('lodash'),
     return hash.match(routeMatcher);
   },
 
-  getMatchedRouteData = function (name, match) {
+  getMatchedRouteData = function (route, match) {
     return {
-      name: name,
-      values: _.zipObject(getRouteKeys(name), _.rest(match))
+      name: route.name,
+      options: route.options,
+      values: _.zipObject(getRouteKeys(route.name), _.rest(match))
     };
   },
 
