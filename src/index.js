@@ -115,6 +115,14 @@ var _ = require('lodash'),
     }
   },
 
+  decodeQuery = function (query) {
+    var result = _.reduce(query || {}, function (queryArray, value, key) {
+        queryArray.push(key + '=' + value);
+        return queryArray;
+      }, []);
+    return _.isEmpty(result) ? '' : encodeURI('?' + result.join('&'));
+  },
+
   NOT_FOUND_ROUTE = {
     name: 'notFound',
     values: {}
@@ -132,9 +140,9 @@ module.exports = {
     onChangeHashCallbacks.push(callback);
   },
 
-  go (name, values) {
+  go (name, values, query) {
     if (isValidRoute(name, values)) {
-      window.location.hash = getRouteUrl(name, values);
+      window.location.hash = getRouteUrl(name, values) + decodeQuery(query);
     }
   },
 
@@ -142,6 +150,25 @@ module.exports = {
     if (isValidRoute(name, values)) {
       return '#' + getRouteUrl(name, values);
     }
+  },
+
+  getQueries () {
+    var hash = window.location.hash,
+      queryPosition = hash.indexOf('?'),
+      result = {},
+      queries;
+    if (queryPosition >= 0) {
+      queries = hash.substr(queryPosition + 1).split('&');
+      _.each(queries, function (query) {
+        var querySplitted = query.split('=');
+        result[querySplitted[0]] = decodeURI(querySplitted[1]);
+      });
+    }
+    return result;
+  },
+
+  getQuery (key) {
+    return _.get(module.exports.getQueries(), key);
   }
 
 };
